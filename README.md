@@ -9,15 +9,13 @@ A backend system for managing financial records with role-based access control, 
 - SQLite
 - PyJWT
 
-## Setup Instructions
+## How to Run Locally
 
 1. Install dependencies:
-pip install fastapi uvicorn sqlalchemy PyJWT python-multipart passlib
+   pip install fastapi uvicorn sqlalchemy PyJWT python-multipart
 
-2. Run the server:
-python -m uvicorn main:app --reload
-
-
+2. Start the server:
+   python -m uvicorn main:app --reload
 
 ## First Time Setup
 
@@ -27,13 +25,13 @@ python -m uvicorn main:app --reload
    - password: admin123
 3. Copy the token and use it to authorize all requests
 
-## Roles & Access Control
+## Roles and Access Control
 
 | Role    | View Records | Create/Edit Records | Manage Users | View Analytics |
-|---------|-------------|--------------------:|-------------|----------------|
-| Admin   | ✅          | ✅                  | ✅          | ✅             |
-| Analyst | ✅          | ❌                  | ❌          | ✅             |
-| Viewer  | ✅          | ❌                  | ❌          | ❌             |
+|---------|-------------|---------------------|-------------|----------------|
+| Admin   | Yes         | Yes                 | Yes         | Yes            |
+| Analyst | Yes         | No                  | No          | Yes            |
+| Viewer  | Yes         | No                  | No          | No             |
 
 ## API Endpoints
 
@@ -49,21 +47,21 @@ python -m uvicorn main:app --reload
 - DELETE /users/{id} - Delete user
 
 ### Financial Records
-- POST /records/ - Create record (Admin)
-- GET /records/ - Get all records with filters (All)
-- GET /records/{id} - Get single record (All)
-- PUT /records/{id} - Update record (Admin)
-- DELETE /records/{id} - Soft delete record (Admin)
+- POST /records/ - Create record (Admin only)
+- GET /records/ - Get all records with filters (All roles)
+- GET /records/{id} - Get single record (All roles)
+- PUT /records/{id} - Update record (Admin only)
+- DELETE /records/{id} - Soft delete record (Admin only)
 
 ### Dashboard
-- GET /dashboard/summary - Total income, expense, balance (All)
-- GET /dashboard/category-totals - Totals by category (Analyst+)
-- GET /dashboard/recent-activity - Last 10 transactions (All)
-- GET /dashboard/monthly-trends - Monthly breakdown (Analyst+)
-- GET /dashboard/breakdown - Income vs expense count (All)
+- GET /dashboard/summary - Total income, expense, balance (All roles)
+- GET /dashboard/category-totals - Totals by category (Analyst and Admin)
+- GET /dashboard/recent-activity - Last 10 transactions (All roles)
+- GET /dashboard/monthly-trends - Monthly breakdown (Analyst and Admin)
+- GET /dashboard/breakdown - Income vs expense count (All roles)
 
 ## Assumptions
-- SQLite used for simplicity - can be replaced with PostgreSQL
+- SQLite used for simplicity
 - Passwords hashed using SHA256
 - JWT tokens expire after 60 minutes
 - Soft delete used for financial records
@@ -74,5 +72,5 @@ python -m uvicorn main:app --reload
 ### User
 - id, name, email, password, role, is_active, created_at
 
-### FinancialRecord
+### Financial Record
 - id, amount, type, category, date, notes, is_deleted, created_at, created_by
