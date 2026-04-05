@@ -17,8 +17,7 @@ pip install fastapi uvicorn sqlalchemy PyJWT python-multipart passlib
 2. Run the server:
 python -m uvicorn main:app --reload
 
-3. Open API docs:
-http://localhost:8000/docs
+
 
 ## First Time Setup
 
